@@ -254,6 +254,42 @@ section.block{padding-block:56px}
 .tbl th{font-size:12.5px;color:var(--muted);font-weight:600}
 .tbl tr:last-child td{border-bottom:0}
 
+/* 셀러 */
+.s-top{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;padding-block:28px 18px}
+.s-top h1{font-size:26px}
+.s-top .who{color:var(--muted);font-size:14px;margin-top:4px}
+.s-badge{font-size:12px;border-radius:4px;padding:2px 8px;background:var(--pine);color:var(--on-pine);margin-left:6px;vertical-align:middle}
+.linkbox{display:grid;gap:12px}
+.linkrow{display:flex;gap:8px;flex-wrap:wrap}
+.linkrow select{height:44px;border:1px solid var(--line);border-radius:var(--r);background:var(--bg);padding:0 10px;flex:0 1 220px;min-width:0}
+.linkrow output{flex:1 1 260px;min-width:0;height:44px;display:flex;align-items:center;border:1px solid var(--line);border-radius:var(--r);background:var(--bg);padding:0 12px;font-family:var(--f-data);font-size:13px;overflow-x:auto;white-space:nowrap;user-select:all}
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:18px}
+.kpis div{background:var(--surface);padding:16px 16px 14px;min-width:0}
+.kpis dt{font-size:12.5px;color:var(--muted)}
+.kpis dd{margin:4px 0 0;font-family:var(--f-data);font-size:24px;font-weight:500;font-variant-numeric:tabular-nums;white-space:nowrap}
+.kpis dd small{font-family:var(--f-sans);font-size:12px;color:var(--muted);margin-left:4px;font-weight:400}
+.kpis .hl dd{color:var(--red)}
+.kpis p{font-size:12px;color:var(--muted);margin-top:2px}
+@media (max-width:900px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.kpis .hl{grid-column:1/-1}}
+.s-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:18px;margin-top:18px;align-items:start}
+@media (max-width:900px){.s-grid{grid-template-columns:minmax(0,1fr)}}
+.chart svg{width:100%;height:auto;display:block}
+.chart .legend{display:flex;gap:14px;font-size:12px;color:var(--muted);margin-bottom:8px;flex-wrap:wrap}
+.chart .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.funnel{display:grid;gap:10px;font-size:14px}
+.funnel .bar{height:8px;border-radius:4px;background:var(--pine-soft);overflow:hidden;margin-top:4px}
+.funnel .bar i{display:block;height:100%;background:var(--pine)}
+.funnel .row{display:flex;justify-content:space-between;gap:8px}
+.st{font-size:12px;border-radius:999px;padding:2px 9px;white-space:nowrap;display:inline-block}
+.st.ok{background:var(--pine-soft);color:var(--pine)}
+.st.wait{background:var(--warn-bg);color:var(--warn)}
+.st.out{background:transparent;border:1px solid var(--line);color:var(--muted);text-decoration:line-through}
+.tbl td.r,.tbl th.r{text-align:right}
+.tbl td.num{font-family:var(--f-data)}
+.rules{display:grid;gap:8px;font-size:14px;margin:0;padding-left:18px}
+.disc{background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:12px;font-size:14px;line-height:1.6}
+.ex{font-size:12px;color:var(--muted)}
+
 /* 하단 */
 footer{background:var(--surface);border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
 footer .wrap{padding-block:32px 40px;display:grid;gap:16px}
@@ -311,7 +347,7 @@ footer .broker{border:1px solid var(--line);border-radius:var(--r);padding:12px 
 <footer>
   <div class="wrap">
     <div class="flinks">
-      <a href="#criteria">선정 기준</a><a href="#lookup">주문 조회</a><a href="#help">고객센터 · 교환/환불 안내</a><span>이용약관</span><span>개인정보처리방침</span>
+      <a href="#criteria">선정 기준</a><a href="#lookup">주문 조회</a><a href="#help">고객센터 · 교환/환불 안내</a><a href="#seller">셀러 로그인</a><span>이용약관</span><span>개인정보처리방침</span>
     </div>
     <div class="broker"><b>250청송은 통신판매중개자이며 통신판매의 당사자가 아닙니다.</b> 상품 정보, 배송, 교환·환불의 책임은 각 판매자(농장)에게 있습니다. 판매자 정보는 각 농장 상세 페이지 하단에서 볼 수 있습니다.</div>
     <div>상호 250청송 · 대표 Josh(자리표시) · 사업자등록번호 000-00-00000 · 통신판매업 신고 제0000-경북청송-0000호 · 고객센터 카카오톡 채널 @250청송</div>
@@ -696,6 +732,147 @@ function viewHelp(){
     <h2>품절·발송 지연</h2><p>날씨나 수확 사정으로 늦어지면 저희가 먼저 연락드립니다.</p></div></div>`;
 }
 
+/* ---------- 셀러 ---------- */
+const SELLER = {name:'청송맘 지은', code:'JE7K2Q', since:'2026.11.10', base:'https://250cheongsong.kr/'};
+const S_CLICKS=[9,14,11,22,31,18,12,26,40,35,28,61,48,57]; // 최근 14일 클릭(예시)
+const S_VISITORS=[7,10,9,15,22,13,9,18,27,24,19,39,31,43];
+const S_ORDERS=[
+  {d:'11.23',no:'250-261123-4821',farm:'haetsal',item:'부사 10kg',amt:69000,st:'wait'},
+  {d:'11.22',no:'250-261122-1307',farm:'malgeunsan',item:'감홍 5kg ×2',amt:90000,st:'wait'},
+  {d:'11.21',no:'250-261121-6650',farm:'baramgol',item:'부사 5kg',amt:37000,st:'wait'},
+  {d:'11.19',no:'250-261119-2218',farm:'haetsal',item:'부사 5kg · 선물포장',amt:42000,st:'out'},
+  {d:'11.16',no:'250-261116-9034',farm:'haetsal',item:'부사 5kg ×3 (선물 3곳)',amt:117000,st:'ok'},
+  {d:'11.14',no:'250-261114-5512',farm:'baramgol',item:'부사 10kg',amt:65000,st:'ok'},
+  {d:'11.12',no:'250-261112-0871',farm:'malgeunsan',item:'감홍 10kg',amt:82000,st:'ok'},
+  {d:'11.11',no:'250-261111-3346',farm:'araetteum',item:'홍로 5kg',amt:35000,st:'ok'},
+  {d:'11.10',no:'250-261110-7720',farm:'haetsal',item:'부사 10kg',amt:69000,st:'ok'},
+];
+const ST_LABEL={ok:'구매확정',wait:'배송 중',out:'환불 (제외)'};
+const sum=a=>a.reduce((x,y)=>x+y,0);
+const mask=no=>no.slice(0,-4)+'****';
+
+function viewSellerLogin(){
+  return `<div class="wrap"><div class="done" style="max-width:460px">
+    <p class="eyebrow">셀러 전용</p>
+    <h1 style="font-size:26px">셀러 로그인</h1>
+    <p class="note">250청송 셀러로 승인된 분만 들어올 수 있습니다. 내 추천 링크와 그 링크로 생긴 주문·수당을 확인합니다.</p>
+    <form class="panel" id="slForm">
+      <div class="field"><label for="sl1">휴대폰</label><input id="sl1" inputmode="tel" placeholder="010-0000-0000"></div>
+      <div class="field"><label for="sl2">인증번호</label><div class="linkrow"><input id="sl2" inputmode="numeric" placeholder="6자리" style="flex:1;height:44px;border:1px solid var(--line);border-radius:var(--r);background:var(--bg);padding:0 12px;min-width:0"><button type="button" class="btn btn-line" id="slSend">인증번호 받기</button></div></div>
+      <button class="btn btn-pine btn-block">로그인</button>
+      <p class="note" style="margin-top:10px">시안이라 아무 값이나 넣고 로그인을 누르면 예시 셀러 화면이 열립니다.</p>
+    </form>
+    <p class="note">셀러가 되고 싶다면 카카오톡 채널 @250청송으로 신청해 주세요. 승인되면 나만의 코드가 담긴 링크를 드립니다.</p>
+  </div></div>`;
+}
+
+function sellerChart(){
+  const W=560,H=200,P={l:34,r:8,t:10,b:26}, max=70, n=S_CLICKS.length;
+  const bw=(W-P.l-P.r)/n, y=v=>P.t+(H-P.t-P.b)*(1-v/max);
+  let g='';
+  [0,20,40,60].forEach(t=>{ g+=`<line x1="${P.l}" x2="${W-P.r}" y1="${y(t)}" y2="${y(t)}" stroke="var(--line)"/><text x="${P.l-6}" y="${y(t)+4}" text-anchor="end" font-size="11" fill="var(--muted)">${t}</text>` });
+  S_CLICKS.forEach((v,i)=>{ const x=P.l+i*bw+bw*.16, w=bw*.68;
+    g+=`<rect x="${x}" y="${y(v)}" width="${w}" height="${y(0)-y(v)}" rx="2" fill="var(--moss)"><title>11.${10+i} 클릭 ${v}</title></rect>`;
+    const vv=S_VISITORS[i]; g+=`<rect x="${x+w*.18}" y="${y(vv)}" width="${w*.64}" height="${y(0)-y(vv)}" rx="2" fill="var(--pine)"><title>11.${10+i} 방문자 ${vv}</title></rect>`;
+    if(i%2===0||i===n-1) g+=`<text x="${x+w/2}" y="${H-8}" text-anchor="middle" font-size="11" fill="var(--muted)">${10+i}</text>`;
+  });
+  return `<div class="chart"><div class="legend"><span><i style="background:var(--moss)"></i>링크 클릭</span><span><i style="background:var(--pine)"></i>방문자 (중복 제외)</span><span>11월 10~23일</span></div>
+    <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="최근 14일 링크 클릭과 방문자 수">${g}</svg></div>`;
+}
+
+function viewSellerDash(){
+  const clicks=412, visitors=286;
+  const valid=S_ORDERS.filter(o=>o.st!=='out');
+  const sales=sum(valid.map(o=>o.amt));
+  const confirmed=sum(S_ORDERS.filter(o=>o.st==='ok').map(o=>o.amt));
+  const pending=sum(S_ORDERS.filter(o=>o.st==='wait').map(o=>o.amt));
+  const conv=(valid.length/visitors*100).toFixed(1);
+  const pct=(v,m)=>Math.max(2,Math.round(v/m*100));
+  const farmOpts=`<option value="">메인 (전체 농장)</option>`+FARMS.filter(f=>f.p5).map(f=>`<option value="${f.id}">${f.name}</option>`).join('');
+  return `<div class="wrap">
+    <div class="s-top"><div><p class="eyebrow">셀러 대시보드 · 예시 데이터</p><h1>${SELLER.name}<span class="s-badge">셀러</span></h1><p class="who">셀러 코드 <b class="num">${SELLER.code}</b> · ${SELLER.since}부터 활동 · 2026년 11월 기준</p></div>
+      <a class="btn btn-line" href="#home">로그아웃</a></div>
+
+    <section class="panel linkbox">
+      <h3 style="margin:0">내 추천 링크</h3>
+      <p class="note">이 링크로 들어온 사람이 30일 안에 주문하면 결제 금액의 5%가 내 수당이 됩니다. 특정 농장 페이지로 바로 보내고 싶으면 농장을 골라 주세요.</p>
+      <div class="linkrow">
+        <select id="sFarm" aria-label="링크로 보낼 페이지">${farmOpts}</select>
+        <output id="sLink" for="sFarm"></output>
+        <button class="btn btn-pine" id="sCopy" type="button">링크 복사</button>
+      </div>
+    </section>
+
+    <dl class="kpis">
+      <div><dt>링크 클릭</dt><dd>${clicks.toLocaleString()}<small>회</small></dd><p>링크를 눌러 들어온 횟수</p></div>
+      <div><dt>방문자</dt><dd>${visitors.toLocaleString()}<small>명</small></dd><p>중복 제외, 같은 사람은 1명</p></div>
+      <div><dt>주문</dt><dd>${valid.length}<small>건</small></dd><p>방문자 중 ${conv}%가 주문</p></div>
+      <div><dt>기여 매출</dt><dd>${won(sales)}</dd><p>환불 ${won(sum(S_ORDERS.filter(o=>o.st==='out').map(o=>o.amt)))} 제외</p></div>
+      <div class="hl"><dt>이번 달 수당 (5%)</dt><dd>${won(Math.round(sales*.05))}</dd><p>확정 ${won(confirmed*.05)} · 대기 ${won(pending*.05)}</p></div>
+    </dl>
+
+    <div class="s-grid">
+      <section class="panel">${sellerChart()}</section>
+      <section class="panel"><h3>링크에서 주문까지</h3>
+        <div class="funnel">
+          <div><div class="row"><span>링크 클릭</span><b class="num">${clicks}</b></div><div class="bar"><i style="width:100%"></i></div></div>
+          <div><div class="row"><span>방문자</span><b class="num">${visitors}</b></div><div class="bar"><i style="width:${pct(visitors,clicks)}%"></i></div></div>
+          <div><div class="row"><span>장바구니 담기</span><b class="num">41</b></div><div class="bar"><i style="width:${pct(41,clicks)}%"></i></div></div>
+          <div><div class="row"><span>주문</span><b class="num">${valid.length}</b></div><div class="bar"><i style="width:${pct(valid.length,clicks)}%"></i></div></div>
+        </div>
+        <p class="note" style="margin-top:14px">링크를 몇 명에게 보냈는지는 카카오톡·문자 안에서 일어나는 일이라 잴 수 없습니다. 그래서 실제로 눌러서 들어온 사람 수를 보여 드립니다.</p>
+      </section>
+    </div>
+
+    <section class="panel" style="margin-top:18px"><h3>내 링크로 생긴 주문</h3>
+      <div class="tbl"><table><thead><tr><th>주문일</th><th>주문번호</th><th>농장 · 상품</th><th class="r">결제 금액</th><th>상태</th><th class="r">수당 5%</th></tr></thead><tbody>
+      ${S_ORDERS.map(o=>`<tr><td class="num">${o.d}</td><td class="num">${mask(o.no)}</td><td>${byId(o.farm).name} · ${o.item}</td><td class="r num">${won(o.amt)}</td><td><span class="st ${o.st}">${ST_LABEL[o.st]}</span></td><td class="r num">${o.st==='out'?'0원':won(o.amt*.05)}</td></tr>`).join('')}
+      </tbody></table></div>
+      <p class="note" style="margin-top:10px">주문한 사람의 이름·연락처는 보이지 않습니다. 배송 중인 주문은 구매확정이 되면 수당이 확정됩니다.</p>
+    </section>
+
+    <div class="s-grid">
+      <section class="panel"><h3>정산</h3>
+        <div class="tbl"><table><thead><tr><th>대상 월</th><th class="r">확정 매출</th><th class="r">수당 5%</th><th>지급일</th><th>상태</th></tr></thead><tbody>
+          <tr><td>2026년 11월</td><td class="r num">${won(confirmed)}</td><td class="r num">${won(confirmed*.05)}</td><td>12월 10일</td><td><span class="st wait">지급 예정</span></td></tr>
+          <tr><td>2026년 10월</td><td class="r num">0원</td><td class="r num">0원</td><td>-</td><td><span class="st out" style="text-decoration:none">활동 전</span></td></tr>
+        </tbody></table></div>
+        <div class="field" style="margin-top:16px"><label for="sAcct">수당 받을 계좌</label><input id="sAcct" value="농협 352-****-****-13 (청송맘 지은)" readonly></div>
+        <p class="note">매달 말일까지 구매확정된 주문의 수당을 다음 달 10일에 한 번 보냅니다. 수당 지급 때 세금을 어떻게 처리할지는 세무사 확인 후 정합니다.</p>
+      </section>
+      <section class="panel"><h3>수당 규칙</h3>
+        <ul class="rules">
+          <li>내 링크로 들어온 사람의 주문 금액 5%를 받습니다. 1단계만 인정하며, 내가 데려온 셀러의 실적은 포함되지 않습니다.</li>
+          <li>링크를 누른 뒤 30일 안의 주문까지 인정합니다. 다른 셀러 링크를 나중에 누르면 마지막 링크가 인정됩니다.</li>
+          <li>취소·환불된 주문은 수당에서 빠지고, 이미 지급한 뒤 환불되면 다음 정산에서 뺍니다.</li>
+          <li>내 링크로 내가 직접 산 주문은 수당이 없습니다.</li>
+        </ul>
+        <h3 style="margin-top:20px">SNS에 올릴 때 꼭 지켜 주세요</h3>
+        <p class="note" style="margin-bottom:8px">수수료를 받는 추천 글은 광고라는 사실을 글 첫머리에 밝혀야 합니다. 더보기 안이나 댓글에 숨기면 안 됩니다.</p>
+        <div class="disc" id="sDisc">[광고] 이 글은 250청송으로부터 판매 수수료를 받습니다.</div>
+        <button class="btn btn-line" id="sDiscCopy" type="button" style="margin-top:8px">문구 복사</button>
+      </section>
+    </div>
+    <p class="ex" style="padding-block:18px 48px">이 화면의 숫자와 주문은 모두 화면 시험용 예시입니다.</p>
+  </div>`;
+}
+function copyText(text,okMsg){
+  const done=()=>toast(okMsg);
+  try{ navigator.clipboard.writeText(text).then(done,()=>toast('복사가 막혀 있어요. 링크를 길게 눌러 복사해 주세요')) }
+  catch(e){ toast('복사가 막혀 있어요. 링크를 길게 눌러 복사해 주세요') }
+}
+function bindSeller(){
+  const lf=document.getElementById('slForm');
+  if(lf){ document.getElementById('slSend').addEventListener('click',()=>toast('인증번호를 보냈습니다 (시안)'));
+    lf.addEventListener('submit',e=>{ e.preventDefault(); location.hash='#seller-dash' }); return }
+  const sel=document.getElementById('sFarm'); if(!sel) return;
+  const out=document.getElementById('sLink');
+  const make=()=>{ out.textContent = SELLER.base+(sel.value?`farm/${sel.value}`:'')+`?ref=${SELLER.code}` };
+  make(); sel.addEventListener('change',make);
+  document.getElementById('sCopy').addEventListener('click',()=>copyText(out.textContent,'링크를 복사했습니다'));
+  document.getElementById('sDiscCopy').addEventListener('click',()=>copyText(document.getElementById('sDisc').textContent,'문구를 복사했습니다'));
+}
+
 function route(){
   const h=(location.hash||'#home').slice(1);
   let html, after=null;
@@ -706,6 +883,8 @@ function route(){
   else if(h==='lookup') html=viewLookup();
   else if(h==='criteria') html=viewCriteria();
   else if(h==='help') html=viewHelp();
+  else if(h==='seller'){ html=viewSellerLogin(); after=bindSeller }
+  else if(h==='seller-dash'){ html=viewSellerDash(); after=bindSeller }
   else html=viewHome();
   app.innerHTML=html; if(after) after();
   if(h!=='home' && h!=='') window.scrollTo(0,0);
